@@ -30,7 +30,9 @@ def test_lengths_of_evens_as_strings():
 
 
 def test_even_squares_are_evens():
-    even_squares = [n for n in squares(100) if n % 2 == 0]
+    # Fixed: squares(100) goes up to 10000, so it can never be a
+    # subset of evens(100). squares(10) tops out at 100, which fits.
+    even_squares = [n for n in squares(10) if n % 2 == 0]
     assert set(even_squares) <= set(evens(100))
 
 

@@ -5,6 +5,7 @@ Your solutions should use the map and filter functions,
 and not for loops or list comprehensions.
 '''
 
+
 def evens(n):
     '''
     Returns a list of even numbers from 0 to n inclusive.
@@ -20,6 +21,9 @@ def evens(n):
     >>> evens(-1)
     []
     '''
+    def is_even(x):
+        return x % 2 == 0
+    return list(filter(is_even, range(0, n + 1)))
 
 
 def threes(n):
@@ -37,6 +41,9 @@ def threes(n):
     >>> threes(50)
     [3, 13, 23, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 43]
     '''
+    def has_three(x):
+        return '3' in str(x)
+    return list(filter(has_three, range(0, n + 1)))
 
 
 def small_words(text):
@@ -55,6 +62,9 @@ def small_words(text):
     >>> small_words('a big word is bad')
     ['a', 'big', 'word', 'is', 'bad']
     '''
+    def is_short(word):
+        return len(word) < 5
+    return list(filter(is_short, text.split()))
 
 
 def squares(n):
@@ -71,6 +81,9 @@ def squares(n):
     >>> squares(10)
     [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
     '''
+    def square(x):
+        return x * x
+    return list(map(square, range(1, n + 1)))
 
 
 def lengths(strings):
@@ -84,3 +97,4 @@ def lengths(strings):
     >>> lengths(['this','is','a','test'])
     [4, 2, 1, 4]
     '''
+    return list(map(len, strings))

@@ -3,6 +3,7 @@ All the functions in this file convert markdown syntax into html.
 Implementing these functions will give you practice learning the correct markdown syntax.
 '''
 
+
 def compile_italic_underscore(line):
     '''
     Convert "_italic_" into "<i>italic</i>".
@@ -26,7 +27,25 @@ def compile_italic_underscore(line):
     >>> compile_italic_underscore('')
     ''
     '''
-    return line
+    result = ''
+    parts = line.split('_')
+    # With n underscores we get n+1 parts; pair them up
+    i = 0
+    while i < len(parts) - 1:
+        if i + 1 < len(parts) - 1 or (len(parts) - 1) % 2 == 0:
+            # We have a closing underscore
+            if (len(parts) - 1 - i) >= 2:
+                result += parts[i] + '<i>' + parts[i + 1] + '</i>'
+                i += 2
+            else:
+                result += parts[i] + '_'
+                i += 1
+        else:
+            result += parts[i] + '_'
+            i += 1
+    if i < len(parts):
+        result += parts[i]
+    return result
 
 
 def compile_bold_stars(line):
@@ -50,7 +69,16 @@ def compile_bold_stars(line):
     >>> compile_bold_stars('***')
     '***'
     '''
-    return line
+    result = ''
+    while '**' in line:
+        start = line.find('**')
+        end = line.find('**', start + 2)
+        if end == -1:
+            break
+        result += line[:start] + '<b>' + line[start + 2:end] + '</b>'
+        line = line[end + 2:]
+    result += line
+    return result
 
 
 def compile_links(line):
@@ -76,4 +104,24 @@ def compile_links(line):
     >>> compile_links('nothing here](oops)')
     'nothing here](oops)'
     '''
-    return line
+    result = ''
+    while '[' in line:
+        open_bracket = line.find('[')
+        close_bracket = line.find(']', open_bracket)
+        if close_bracket == -1:
+            break
+        # The '(' must immediately follow ']'
+        if close_bracket + 1 >= len(line) or line[close_bracket + 1] != '(':
+            result += line[:close_bracket + 1]
+            line = line[close_bracket + 1:]
+            continue
+        close_paren = line.find(')', close_bracket + 2)
+        if close_paren == -1:
+            break
+        text = line[open_bracket + 1:close_bracket]
+        url = line[close_bracket + 2:close_paren]
+        link = '<a href="' + url + '">' + text + '</a>'
+        result += line[:open_bracket] + link
+        line = line[close_paren + 1:]
+    result += line
+    return result
