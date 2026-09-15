@@ -8,7 +8,11 @@ jobs:
   tests:
     strategy:
       matrix:
+<<<<<<< HEAD
         python: ['3.9', '3.10', '3.11', '3.12']
+=======
+        python: [3.14]
+>>>>>>> 1d00365ffa06bce9e994e8d120150c6aa0debdde
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
